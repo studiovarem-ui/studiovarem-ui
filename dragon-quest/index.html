@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드래곤을 찾아서</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 타이틀 화면 -->
+        <div id="title-screen" class="screen active">
+            <div class="title-content">
+                <h1 class="game-title">🐉 드래곤을 찾아서</h1>
+                <p class="subtitle">아기 드래곤과 함께 떠나는 모험</p>
+                <div class="menu-buttons">
+                    <button id="new-game-btn" class="menu-btn">새 게임</button>
+                    <button id="load-game-btn" class="menu-btn">이어하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 캐릭터 생성 화면 -->
+        <div id="character-creation" class="screen">
+            <div class="creation-content">
+                <h2>모험가를 만들어주세요</h2>
+
+                <div class="creation-section">
+                    <label>이름</label>
+                    <input type="text" id="player-name" placeholder="이름을 입력하세요" maxlength="10">
+                </div>
+
+                <div class="creation-section">
+                    <label>성별</label>
+                    <div class="gender-select">
+                        <button class="gender-btn selected" data-gender="boy">👦 남자아이</button>
+                        <button class="gender-btn" data-gender="girl">👧 여자아이</button>
+                    </div>
+                </div>
+
+                <div class="creation-section">
+                    <label>외모</label>
+                    <div class="appearance-select">
+                        <div class="appearance-option selected" data-appearance="1">
+                            <div class="appearance-preview" id="appearance-1"></div>
+                        </div>
+                        <div class="appearance-option" data-appearance="2">
+                            <div class="appearance-preview" id="appearance-2"></div>
+                        </div>
+                        <div class="appearance-option" data-appearance="3">
+                            <div class="appearance-preview" id="appearance-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="start-adventure-btn" class="menu-btn primary">모험 시작!</button>
+            </div>
+        </div>
+
+        <!-- 스토리/대화 화면 -->
+        <div id="story-screen" class="screen">
+            <div class="story-background" id="story-bg"></div>
+            <div class="story-content">
+                <div class="story-text-box">
+                    <p class="narrator-text" id="narrator-text"></p>
+                    <div class="story-choices" id="story-choices"></div>
+                    <button class="continue-btn" id="continue-btn">▶ 계속</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 게임 화면 (맵 탐험) -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="player-info">
+                    <span class="player-name-display" id="player-name-display"></span>
+                    <div class="hp-bar">
+                        <span class="hp-icon">❤️</span>
+                        <div class="hp-fill" id="hp-fill"></div>
+                        <span class="hp-text" id="hp-text">10/10</span>
+                    </div>
+                </div>
+                <div class="chapter-info" id="chapter-info">챕터 1</div>
+                <button class="menu-icon" id="game-menu-btn">☰</button>
+            </div>
+
+            <div class="game-main">
+                <div class="hex-map-container">
+                    <div class="hex-map" id="hex-map"></div>
+                </div>
+
+                <div class="dragon-companion" id="dragon-companion">
+                    <div class="dragon-sprite"></div>
+                    <div class="dragon-info">
+                        <span class="dragon-name">아기 드래곤</span>
+                        <span class="dragon-level">Lv.1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-footer">
+                <button class="footer-btn" id="inventory-btn">🎒 가방</button>
+                <button class="footer-btn" id="status-btn">📊 상태</button>
+                <button class="footer-btn" id="save-btn">💾 저장</button>
+            </div>
+        </div>
+
+        <!-- 인벤토리 모달 -->
+        <div id="inventory-modal" class="modal">
+            <div class="modal-content inventory-content">
+                <div class="modal-header">
+                    <h3>🎒 가방</h3>
+                    <button class="close-btn" id="close-inventory">&times;</button>
+                </div>
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- 8칸의 인벤토리 슬롯 -->
+                </div>
+                <div class="item-description" id="item-description">
+                    아이템을 클릭하면 설명이 표시됩니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 전투 화면 -->
+        <div id="combat-screen" class="screen">
+            <div class="combat-background" id="combat-bg"></div>
+
+            <div class="combat-header">
+                <div class="enemy-info">
+                    <span class="enemy-name" id="enemy-name">적</span>
+                    <div class="enemy-hp-bar">
+                        <div class="enemy-hp-fill" id="enemy-hp-fill"></div>
+                    </div>
+                    <span class="enemy-hp-text" id="enemy-hp-text">5/5</span>
+                </div>
+            </div>
+
+            <div class="combat-main">
+                <div class="enemy-sprite" id="enemy-sprite"></div>
+                <div class="player-sprite" id="player-combat-sprite"></div>
+                <div class="dragon-combat" id="dragon-combat"></div>
+            </div>
+
+            <div class="combat-log" id="combat-log">
+                <p>전투 시작!</p>
+            </div>
+
+            <div class="dice-area" id="dice-area">
+                <div class="dice" id="dice">🎲</div>
+                <div class="dice-result" id="dice-result"></div>
+            </div>
+
+            <div class="combat-footer">
+                <div class="player-combat-info">
+                    <span>❤️ <span id="combat-hp">10/10</span></span>
+                </div>
+                <div class="combat-actions">
+                    <button class="combat-btn" id="attack-btn">⚔️ 공격</button>
+                    <button class="combat-btn" id="defend-btn">🛡️ 방어</button>
+                    <button class="combat-btn" id="dragon-skill-btn">🔥 드래곤</button>
+                    <button class="combat-btn" id="flee-btn">🏃 도망</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게임 메뉴 모달 -->
+        <div id="game-menu-modal" class="modal">
+            <div class="modal-content menu-content">
+                <h3>메뉴</h3>
+                <button class="menu-modal-btn" id="resume-btn">게임으로 돌아가기</button>
+                <button class="menu-modal-btn" id="save-game-btn">게임 저장</button>
+                <button class="menu-modal-btn" id="to-title-btn">타이틀로</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/story.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/combat.js"></script>
+</body>
+</html>
